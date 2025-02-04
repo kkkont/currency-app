@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 @Entity
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class ExchangeRateData {
     private Double obsValue;
     private String title;
     private String titleCompl;
-    private LocalDateTime timestamp;
+    private LocalDate timestamp;
 
 
 }

@@ -1,0 +1,9 @@
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="errorMessage">{{ errorMessage }}</div>
+<div *ngIf="!loading && !errorMessage">
+  <ul>
+    <li *ngFor="let rate of rates" (click)="goToCurrencyHistory(rate.currency)">
+      {{ rate.currency }}: {{ rate.obsValue }}
+    </li>
+  </ul>
+</div>

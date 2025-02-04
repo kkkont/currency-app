@@ -5,16 +5,14 @@ import com.currency_app.currency_app_backend.service.ExchangeRatesDataService;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/currency-app")
 public class ExchangeRatesDataController {
     private final ExchangeRatesDataService exchangeRatesDataService;
@@ -75,7 +73,7 @@ public class ExchangeRatesDataController {
             return ResponseEntity.badRequest().body("Currency must not be empty.");
         }
 
-        if (euro <= 0) {
+        if (euro < 0) {
             return ResponseEntity.badRequest().body("Amount must be greater than zero.");
         }
         Double sum = exchangeRatesDataService.calculateCurrency(currency,euro);

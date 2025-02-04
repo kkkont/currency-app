@@ -1,0 +1,17 @@
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Exchange Rate</th>
+    </tr>
+  </thead>
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div *ngIf="!history">There is no data</div>
+  <tbody>
+    <tr *ngFor="let entry of history">
+      <td>{{ entry.timestamp }}</td>
+      <td>{{ entry.obsValue }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -10,12 +10,24 @@ import java.util.List;
 
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRateData, Long> {
+
+    /**
+     * Finds a list of exchange rates for a given currency ordered by timestamp in descending order,
+     * with pagination support.
+     */
     List<ExchangeRateData> findByCurrencyOrderByTimestampDesc(String currency, Pageable pageable);
-    @Query("SELECT e FROM ExchangeRateData e " +
-            "WHERE e.timestamp = (SELECT MAX(innerE.timestamp) FROM ExchangeRateData innerE WHERE innerE.currency = e.currency) " +
-            "ORDER BY e.currency")
+
+    /**
+     * Finds the latest exchange rate entry for each currency, ordered by currency.
+     */
+    @Query("SELECT e FROM ExchangeRateData e WHERE e.timestamp IN (" +
+            "SELECT MAX(innerE.timestamp) FROM ExchangeRateData innerE " +
+            "GROUP BY innerE.currency) ORDER BY e.currency")
     List<ExchangeRateData> findLatestEntriesForAllCurrencies();
 
+    /**
+     * Finds the latest exchange rate entry for a given currency.
+     */
     ExchangeRateData findTopByCurrencyOrderByTimestampDesc(String currency);
 
 }

@@ -1,6 +1,30 @@
 <div class="flex items-center justify-center mt-20 mb-20">
   <div class="w-1/2 mb-6 p-6 bg-slate-50 rounded-lg shadow-md">
-    <div *ngIf="currencyData; else noCurrencyData" class="text-center mb-6">
+    <div *ngIf="loading" class="flex justify-center items-center mt-4">
+      <div
+        class="loader w-10 h-10 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"
+      ></div>
+    </div>
+
+    <div *ngIf="errorMessage" class="flex flex-col">
+      <div class="flex justify-end mb-4">
+        <button
+          (click)="goBack()"
+          class="px-4 py-2 text-[0.9em] bg-red-400 text-white font-medium rounded-md hover:bg-red-500 flex items-center"
+        >
+          Back
+        </button>
+      </div>
+      <div class="text-center mb-6">
+        <h1 class="text-3xl font-semibold text-red-500">
+          Currency data not found for {{ currency }}!
+        </h1>
+        <p class="text-gray-500 mt-2 text-lg">
+          Please check if the currency code is correct or try again later.
+        </p>
+      </div>
+    </div>
+    <div *ngIf="currencyData && currencyRate" class="text-center mb-6">
       <div class="flex mb-4 justify-between">
         <div class="flex items-center">
           <p class="mr-2 text-4xl">
@@ -17,27 +41,36 @@
         </div>
         <button
           (click)="goBack()"
-          class="px-4 py-2 text-[0.9em] bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 flex items-center"
+          class="px-4 py-2 text-[0.9em] bg-red-400 text-white font-medium rounded-md hover:bg-red-500 flex items-center"
         >
           Back
         </button>
       </div>
-
+      <div class="flex">
+        <p
+          class="text-white text-semibold p-2 rounded-lg inline-block max-w-fit shadow-md mb-2 mr-3"
+          style="background-color: rgba(5, 150, 104, 0.752)"
+        >
+          1 € = {{ currencyRate.obsValue }} {{ currencyData.symbol_native }}
+        </p>
+        <p
+          class="text-white text-semibold p-2 rounded-lg inline-block max-w-fit shadow-md mb-2"
+          style="background-color: rgba(5, 150, 104, 0.752)"
+        >
+          {{ currencyRate.currency }}
+        </p>
+      </div>
+      <p class="text-gray-500 mt-2 text-l text-left">
+        {{ currencyRate.titleCompl }}
+      </p>
+      <hr class="mb-4 mt-4 border-slate-300" />
       <app-currency-calculator [currency]="currency"></app-currency-calculator>
+      <hr class="mb-4 mt-4 border-slate-300" />
+
       <app-currency-history [currency]="currency"></app-currency-history>
       <p class="text-gray-500 mt-2 text-lg text-left">
         The rates are updated each working day at 17:00 CET.
       </p>
     </div>
-    <ng-template #noCurrencyData>
-      <div class="text-center mb-6">
-        <h1 class="text-3xl font-semibold text-red-500">
-          Currency data not found for {{ currency }}!
-        </h1>
-        <p class="text-gray-500 mt-2 text-lg">
-          Please check if the currency code is correct or try again later.
-        </p>
-      </div>
-    </ng-template>
   </div>
 </div>

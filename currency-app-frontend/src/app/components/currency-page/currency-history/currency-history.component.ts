@@ -35,8 +35,8 @@ export class CurrencyHistoryComponent implements OnInit {
    * Calls the CurrencyService to get the history, then updates the component's history property.
    */
   fetchCurrencyHistory() {
-    this.loading = true; // Set loading state
-    this.errorMessage = null; // Reset previous error messages
+    this.loading = true;
+    this.errorMessage = null;
 
     this.currencyService.getCurrencyHistory(this.currency).subscribe({
       next: (data: ExchangeRate[]) => {
@@ -59,8 +59,12 @@ export class CurrencyHistoryComponent implements OnInit {
    * Creates the line chart for exchange rate history
    */
   createChart() {
-    const labels = this.history.map((entry) => entry.timestamp);
-    const data = this.history.map((entry) => entry.obsValue);
+    const sortedHistory = [...this.history].sort((a, b) => {
+      return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+    });
+
+    const labels = sortedHistory.map((entry) => entry.timestamp);
+    const data = sortedHistory.map((entry) => entry.obsValue);
 
     this.chart = new Chart('exchangeRateChart', {
       type: 'line',
@@ -82,6 +86,8 @@ export class CurrencyHistoryComponent implements OnInit {
 
       options: {
         aspectRatio: 3,
+        responsive: true,
+        maintainAspectRatio: false,
       },
     });
   }

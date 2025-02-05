@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 export class CurrencyCalculatorComponent implements OnInit {
   @Input() currency: string = '';
   amountInEur: number = 0;
+  loading: boolean = false;
   result: number | null = null;
   errorMessage: string | null = null;
 
@@ -33,6 +34,7 @@ export class CurrencyCalculatorComponent implements OnInit {
     const amount = parseFloat(inputAmount);
     if (amount >= 0 && this.currency) {
       this.amountInEur = amount;
+      this.loading = true;
       this.currencyService
         .calculateCurrency(this.currency, this.amountInEur)
         .subscribe({
@@ -44,7 +46,20 @@ export class CurrencyCalculatorComponent implements OnInit {
               'Error converting currency. Please try again later.';
             console.error('Error calculating currency:', error);
           },
+          complete: () => {
+            this.loading = false;
+          },
         });
+    }
+  }
+
+  /**
+   * Checks if the input is valid
+   * @param input input from the field
+   */
+  onInputChange(input: HTMLInputElement): void {
+    if (parseFloat(input.value) < 0) {
+      input.value = '0';
     }
   }
 }

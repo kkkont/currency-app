@@ -1,5 +1,43 @@
-<div>
-  <h1>Currency Page for {{ currency }}</h1>
-  <app-currency-calculator [currency]="currency"></app-currency-calculator>
-  <app-currency-history [currency]="currency"></app-currency-history>
+<div class="flex items-center justify-center mt-20 mb-20">
+  <div class="w-1/2 mb-6 p-6 bg-slate-50 rounded-lg shadow-md">
+    <div *ngIf="currencyData; else noCurrencyData" class="text-center mb-6">
+      <div class="flex mb-4 justify-between">
+        <div class="flex items-center">
+          <p class="mr-2 text-4xl">
+            <span>{{ currencyData.emoji }}</span>
+          </p>
+          <div class="flex items-center">
+            <h1 class="text-3xl font-semibold text-emerald-700">
+              {{ currencyData.name }}
+            </h1>
+            <p class="text-3xl ml-2" style="color: rgba(6, 101, 69, 0.583)">
+              {{ currencyData.symbol_native }}
+            </p>
+          </div>
+        </div>
+        <button
+          (click)="goBack()"
+          class="px-4 py-2 text-[0.9em] bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 flex items-center"
+        >
+          Back
+        </button>
+      </div>
+
+      <app-currency-calculator [currency]="currency"></app-currency-calculator>
+      <app-currency-history [currency]="currency"></app-currency-history>
+      <p class="text-gray-500 mt-2 text-lg text-left">
+        The rates are updated each working day at 17:00 CET.
+      </p>
+    </div>
+    <ng-template #noCurrencyData>
+      <div class="text-center mb-6">
+        <h1 class="text-3xl font-semibold text-red-500">
+          Currency data not found for {{ currency }}!
+        </h1>
+        <p class="text-gray-500 mt-2 text-lg">
+          Please check if the currency code is correct or try again later.
+        </p>
+      </div>
+    </ng-template>
+  </div>
 </div>

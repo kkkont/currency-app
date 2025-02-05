@@ -20,9 +20,9 @@ public interface ExchangeRateRepository extends JpaRepository<ExchangeRateData, 
     /**
      * Finds the latest exchange rate entry for each currency, ordered by currency.
      */
-    @Query("SELECT e FROM ExchangeRateData e WHERE e.timestamp IN (" +
+    @Query("SELECT e FROM ExchangeRateData e WHERE e.timestamp = (" +
             "SELECT MAX(innerE.timestamp) FROM ExchangeRateData innerE " +
-            "GROUP BY innerE.currency) ORDER BY e.currency")
+            "WHERE innerE.currency = e.currency) ORDER BY e.currency")
     List<ExchangeRateData> findLatestEntriesForAllCurrencies();
 
     /**

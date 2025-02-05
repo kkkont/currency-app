@@ -1,9 +1,61 @@
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="errorMessage">{{ errorMessage }}</div>
-<div *ngIf="!loading && !errorMessage">
-  <ul>
-    <li *ngFor="let rate of rates" (click)="goToCurrencyHistory(rate.currency)">
-      {{ rate.currency }}: {{ rate.obsValue }}
-    </li>
-  </ul>
+<div class="flex items-center justify-center mt-20 mb-20">
+  <div class="w-1/2 mb-6 p-6 bg-slate-50 rounded-lg shadow-md">
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-semibold text-emerald-700">
+        Euro foreign exchange reference rates
+      </h1>
+      <p class="text-gray-500 mt-2 text-lg">
+        The rates are updated each working day at 17:00 CET.
+      </p>
+    </div>
+
+    <p class="text-gray-500 mt-12 mb-2 text-l">
+      {{ date }}
+    </p>
+    <div *ngIf="loading" class="flex justify-center items-center mt-4">
+      <div
+        class="loader w-10 h-10 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"
+      ></div>
+    </div>
+    <div
+      *ngIf="errorMessage"
+      class="flex justify-center items-center text-red-500 bg-red-100 p-4 rounded-md"
+    >
+      <span class="ml-2">{{ errorMessage }}</span>
+    </div>
+    <div *ngIf="!loading && !errorMessage">
+      <table class="min-w-full table-auto mb-6">
+        <thead>
+          <tr class="bg-slate-200 text-left">
+            <th></th>
+            <th class="px-4 py-2 text-emerald-800">Currency</th>
+            <th class="px-4 py-2 text-emerald-800">Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let rate of rates">
+            <tr
+              *ngIf="getCurrencyData(rate.currency) as currency"
+              class="border-b border-gray-200 hover:bg-slate-100"
+              (click)="goToCurrencyHistory(rate.currency)"
+            >
+              <td class="px-4 py-2 text-center text-2xl">
+                <span>{{ currency.emoji }}</span>
+              </td>
+              <td class="px-4 py-2">
+                {{ rate.currency }}
+              </td>
+              <td class="px-4 py-2">
+                {{ currency.name }}
+              </td>
+              <td class="px-4 py-2 text-right text-emerald-700 font-semibold">
+                {{ rate.obsValue }}
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
